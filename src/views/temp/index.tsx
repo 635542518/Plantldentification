@@ -94,14 +94,15 @@ async function identifyImg(imgData:ImageData){
   const result = await session.run(feeds)
   const resultNbm = result.output.data
   const bufferArray: Float32Array = resultNbm as Float32Array;
-  const normalArray: number[] = Array.from(bufferArray);
-  const maxLength: number = normalArray.reduce((acc, current) => {
-    const currentLength: number = current.toString().length;
-    return Math.max(acc, currentLength);
-  }, 0);
-  
-  const recognitionResultText = classes[maxLength];
-  console.log(recognitionResultText)
+  let resultIdx:number = 0
+  let resultMax:number = bufferArray[0]
+  bufferArray.forEach((v,i)=>{
+    if (v>resultMax){
+      resultMax = v
+      resultIdx = i
+    }
+  })
+  console.log(classes[resultIdx])
 }
 
 

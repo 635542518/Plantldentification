@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "es2019",
+    "lib":  ["es2019", "es2020.promise", "es2020.bigint", "es2020.string","dom"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
