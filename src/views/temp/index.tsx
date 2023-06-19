@@ -87,12 +87,19 @@ function imageDataToTensor(data:Uint8ClampedArray,dims:number[]){
   return x;
 }
 
+function softmax(arr: Float32Array): Float32Array {
+  const max = Math.max(...arr);
+  const expArr = Array.from(arr, (num) => Math.exp(num - max));
+  const sum = expArr.reduce((acc, cur) => acc + cur, 0);
+  return new Float32Array(expArr.map((num) => num / sum));
+}
+
 async function identifyImg(imgData:ImageData){
   const session = await InferenceSession.create('/sqNext.onnx');
   const imageDataTensor = imageDataToTensor(imgData.data,[3,224,224])
   const feeds = { input: imageDataTensor };
   const result = await session.run(feeds)
-  const resultNbm = result.output.data
+  const resultNbm = softmax(result.output.data as Float32Array)
   const bufferArray: Float32Array = resultNbm as Float32Array;
   let resultIdx:number = 0
   let resultMax:number = bufferArray[0]
