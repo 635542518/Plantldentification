@@ -3,7 +3,9 @@ import { useRoutes, RouteObject, Navigate} from "react-router-dom";
 import Layout from '../views/layout'
 import Home from '../views/home';
 import User from '../views/user';
-import Login from '../views/login';
+import Login from '../views/login'
+import Barplot from '../component/barplot'
+
  
 export const router_item:Array<object> = [
     { 

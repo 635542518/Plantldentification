@@ -8,9 +8,9 @@ function ImageRecognition() {
             <div>将图像拖动到此处</div>
             <div>— 或 —</div>
             <div className="ImageRecognitionButton">
-                <button><CameraFilled />拍照</button>
-                <button><FileImageOutlined />粘贴图像或URL</button>
-                <button><PictureOutlined />浏览</button>
+                <button style={{color:'white'}}><CameraFilled />拍照</button>
+                <button style={{color:'white'}}><FileImageOutlined />粘贴图像或URL</button>
+                <button style={{color:'white'}}><PictureOutlined />浏览</button>
             </div>
         </section>
     )

@@ -6,7 +6,7 @@ function App() {
     <div>
       <HashRouter>
         <GetRouters />
-    </HashRouter>
+      </HashRouter>
   </div>
   );
 }
