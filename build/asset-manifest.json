@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/static/css/main.8c4ab0c7.css",
+    "main.js": "/static/js/main.3eccd994.js",
+    "static/js/787.b99cf5a3.chunk.js": "/static/js/787.b99cf5a3.chunk.js",
+    "static/js/ort-wasm-simd.wasm": "/static/js/ort-wasm-simd.wasm",
+    "static/js/ort-wasm.wasm": "/static/js/ort-wasm.wasm",
+    "static/media/banner.jpg": "/static/media/banner.b1db3849611f2024a4de.jpg",
+    "service-worker.js": "/service-worker.js",
+    "static/media/logo.png": "/static/media/logo.06665bcf9c435707a58d.png",
+    "index.html": "/index.html",
+    "main.8c4ab0c7.css.map": "/static/css/main.8c4ab0c7.css.map",
+    "main.3eccd994.js.map": "/static/js/main.3eccd994.js.map",
+    "787.b99cf5a3.chunk.js.map": "/static/js/787.b99cf5a3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8c4ab0c7.css",
+    "static/js/main.3eccd994.js"
+  ]
+}

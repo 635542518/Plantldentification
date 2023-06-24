@@ -42,11 +42,11 @@ function Login(){
                 <div className="App">
                     {/* <ImageRecognition /> */}
                     {/* <Identify /> */}
-                    {/* <DragAndDropUploader /> */}
+                    <DragAndDropUploader />
                     {/* <VideoIdentify/> */}
-                    {/* <Barplot/> */}
-                    {/* <Pieplot/> */}
-                    <Heatmap/>
+                    <Barplot/>
+                    <Pieplot/>
+                    {/* <Heatmap/> */}
                 </div>
             </section>
             <footer>
