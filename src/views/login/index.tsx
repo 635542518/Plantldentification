@@ -10,6 +10,7 @@ import VideoIdentify from '../videoIdentify'
 import Barplot from '../../component/barplot'
 import Pieplot from '../../component/pieplot'
 import Heatmap from '../../component/heatmap'
+import HistoryCollapse from '../history'
 
 import React, { createContext, useContext, useState } from 'react';
 import MyComponent from "../adcode";
@@ -42,11 +43,12 @@ function Login(){
                 <div className="App">
                     {/* <ImageRecognition /> */}
                     {/* <Identify /> */}
-                    <DragAndDropUploader />
+                    {/* <DragAndDropUploader /> */}
                     {/* <VideoIdentify/> */}
-                    <Barplot/>
-                    <Pieplot/>
+                    {/* <Barplot/> */}
+                    {/* <Pieplot/> */}
                     {/* <Heatmap/> */}
+                    <HistoryCollapse/>
                 </div>
             </section>
             <footer>
