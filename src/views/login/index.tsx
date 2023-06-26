@@ -16,7 +16,7 @@ import React, { createContext, useContext, useState } from 'react';
 import MyComponent from "../adcode";
 import { create } from "domain";
 
-export const MyContext = createContext<[any, React.Dispatch<React.SetStateAction<any>>] | undefined>(undefined);
+
 
 const styleLoginBG = {
     backgroundImage: `url(${LoginBG})`,
@@ -27,9 +27,8 @@ const styleLoginBG = {
     opacity: '2'
 }
 function Login(){
-    const [identifyData, setIdentifyDate] = useState([])
+    
     return (
-        <MyContext.Provider value={[identifyData, setIdentifyDate]}>
         <div className="body-box">
             <div className="login-container" style={styleLoginBG}>
                 <div className='cover' >
@@ -55,7 +54,6 @@ function Login(){
                 <Text />
             </footer>
         </div>
-        </MyContext.Provider>
     )
 }
 export default Login;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import ImageRecognition from '../imageRecognition';
 import { identifyImg } from '../../modules/identify_mod'
 import { getAll,remove } from '../../modules/database_mod'
-import { MyContext } from '../login';
+import { MyContext } from '../../App';
 import './temp.scss'
 import type { UploadProps } from 'antd';
 import { message, Upload } from 'antd';
@@ -15,6 +15,8 @@ interface UploadImgData {
   lat: number;
   outPutData:string;
   imgName:string;
+  address:string;
+  speed:number;
 }
 
 function pushData(Data:UploadImgData){
@@ -30,7 +32,7 @@ function pushData(Data:UploadImgData){
     .catch(err => console.error(err));
 }
 
-function parserImgData(result:{name: string,value: number;}[],lng:number,lat:number,imgName:string):UploadImgData{
+function parserImgData(result:{name: string,value: number;}[],lng:number,lat:number,imgName:string,address:string,speedTime:number):UploadImgData{
   let maxVal = result[0]['value']
   let maxIdx = 0
   let outPutData = '['
@@ -51,7 +53,9 @@ function parserImgData(result:{name: string,value: number;}[],lng:number,lat:num
     lng: lng,
     lat: lat,
     outPutData:outPutData,
-    imgName:imgName
+    imgName:imgName,
+    address:address,
+    speed:speedTime
   }
   return res
 }
@@ -60,20 +64,11 @@ let reader = new FileReader()
 let fileImg = new Image();
 fileImg.crossOrigin = ''
 const IMGSIZE = 224
-let lat = 0
-let lng = 0
-
-
-function showPosition(position:any) {
-  lat = position.coords.latitude;
-  lng = position.coords.longitude;
-}
-navigator.geolocation.getCurrentPosition(showPosition);
 
 
 
 const App: React.FC = () => {
-  const identifyData = useContext(MyContext);
+  const {identifyData,setIdentifyData} = useContext(MyContext)!;
   let filename = ''
 
   useEffect(()=>{
@@ -83,17 +78,26 @@ const App: React.FC = () => {
       fileImg.src = event.target!.result as string
     }
 
-    fileImg.onload = function(){  
+    fileImg.onload = async function(){  
       imgCanvas!.clearRect(0, 0, IMGSIZE, IMGSIZE);
       imgCanvas!.drawImage(fileImg, 0, 0,IMGSIZE,IMGSIZE);
       let imgData:ImageData|undefined = imgCanvas?.getImageData(0, 0, IMGSIZE, IMGSIZE);
-      identifyImg(imgData!).then((result)=>{
-          identifyData![1](result)
-          pushData(parserImgData(result,lat,lng,filename))
+      const options = {method: 'GET'};
+      let response = await fetch('https://restapi.amap.com/v3/ip?=&output=JSON&key=73653ae946f02b0cb1e8c35957f0bd12', options)
+      let data = await response.json();
+      const [lng,lat] = data.rectangle.split(';')[0].split(',')
+      response = await fetch(`https://restapi.amap.com/v3/geocode/regeo?output=JSON&location=${lng},${lat}&key=73653ae946f02b0cb1e8c35957f0bd12&radius=1000&extensions=all`)
+      data = await response.json()
+      const address = data.regeocode.formatted_address 
+      const startTime = new Date()
+      identifyImg(imgData!).then((result:any)=>{
+          setIdentifyData(result)
+          const endTime = new Date()
+          const speedTime = (endTime.getTime() - startTime.getTime()) as number;
+          pushData(parserImgData(result,lng,lat,filename,address,speedTime))
       })
     }
   },[])
-
 
 
   const props: UploadProps = {
@@ -104,12 +108,12 @@ const App: React.FC = () => {
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
-        message.success(`识别中`);
+        message.loading({ content: 'Loading...',key:'1'});
         getAll()
       }
       if (status === 'done') {
 
-        message.success(`${info.file.response['filename']} 识别成功`);
+        message.success({content:`${info.file.response['filename']} 识别成功`,key:'1'});
         fileImg.src=`http://localhost:3000/files/${info.file.response['filename']}`
         filename = info.file.response['filename']
 
@@ -125,7 +129,7 @@ const App: React.FC = () => {
 
   return (<div>
     <canvas height={IMGSIZE} width={IMGSIZE}></canvas>
-    <Dragger {...props} className='ImageRecognition'>
+    <Dragger {...props} className='ImageRecognition' style={{border: 'dashed 1px white'}}>
       <ImageRecognition />
     </Dragger>
   </div>
