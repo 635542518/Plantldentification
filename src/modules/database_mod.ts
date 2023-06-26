@@ -1,23 +1,23 @@
-function remove(id:number):void{
-    const options = {
-        method: 'GET', 
-        headers: {'content-type': 'application/json'}, body: 'false'
-    };
-    let data:any = undefined
-    fetch(`http://localhost:3000/users/${id}`, options)
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(err => console.error(err));
+function remove(id:number[]){
+    return new Promise((resolve,reject)=>{
+        fetch(`http://localhost:3000/users/${id.join('|')}`)
+        .then(response => response.json())
+        .then(response => resolve(response))
+        .catch(err => reject(err));
+    })
+
 }
-function getAll(){
+function getAll() {
     const options = {
-        method: 'GET',
-        headers: {'content-type': 'application/json'},
-      };
-      
+      method: 'GET',
+      headers: { 'content-type': 'application/json' },
+    };
+  
+    return new Promise((resolve, reject) => {
       fetch('http://localhost:3000/users', options)
         .then(response => response.json())
-        .then(response => console.log(response))
-        .catch(err => console.error(err));
-}
+        .then(response => resolve(response))
+        .catch(err => reject(err));
+    });
+  }
 export {remove,getAll}

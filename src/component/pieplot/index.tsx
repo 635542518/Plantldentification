@@ -5,9 +5,9 @@ import React, { useContext } from 'react';
 import {MyContext} from '../../App';
 import { Pie, measureTextWidth } from '@ant-design/plots';
 
-const DemoPie = () => {
+const DemoPie = (props) => {
   const {identifyData,setIdentifyData} = useContext(MyContext)!;
-  const data = identifyData
+  let data = props.data!=undefined?props.data:identifyData
   function renderStatistic(containerWidth, text, style) {
     return `<div style=font-size:10px>
             ${text}
@@ -80,8 +80,8 @@ const DemoPie = () => {
 };
   const Pieplot = (props)=>{
     const piestyle = {
-      height:'450px',
-      width:'450px',
+      height:props.height!=undefined?props.height:'280px',
+      width:props.width!=undefined?props.width:'280px',
       background: 'rgba(255,255,255,.25)',
       backdropFilter: 'blur(10px) saturate(1.5)',
       borderRadius: '10px',
@@ -89,7 +89,7 @@ const DemoPie = () => {
     }
     return(
       <div style={piestyle}>
-        {/* <DemoPie /> */}
+        <DemoPie data = {props.data}/>
       </div>
     )
   }

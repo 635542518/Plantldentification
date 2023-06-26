@@ -7,8 +7,7 @@ import {MyContext} from '../../App';
 
 const DemoColumn = (props) => {
   const {identifyData,setIdentifyData} = useContext(MyContext)!;
-  const data = identifyData
-
+  let data = props.data!=undefined?props.data:identifyData
   const config = {
     data,
     xField: 'name',
@@ -42,9 +41,9 @@ const DemoColumn = (props) => {
 };
 
 const Barplot = (props)=>{
-  const barstyle = {
-    height:'450px',
-    width:'450px',
+  let barstyle = {
+    height:props.height!=undefined?props.height:'280px',
+    width:props.width!=undefined?props.width:'280px',
     background: 'rgba(255,255,255,.25)',
     backdropFilter: 'blur(10px) saturate(1.5)',
     borderRadius: '10px',
@@ -52,7 +51,7 @@ const Barplot = (props)=>{
   }
   return(
     <div style={barstyle}>
-      <DemoColumn />
+      <DemoColumn data = {props.data}/>
     </div>
   )
 }
