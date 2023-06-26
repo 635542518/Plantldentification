@@ -90,20 +90,7 @@ function DataRrocessing(){
 function RecognitionResultDef(){
     const {filename,setFilename} = useContext(MyContext)!;
     const filenameurl =  'http://localhost:3000/files/' + filename;
-    fetch('/users/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message: 'Hello, World!' })
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);  // 打印响应数据
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+
     return (
         <div className="body-box imageRecognitionIndexBbox">
             <div className="login-container" style={styleLoginBG}>
