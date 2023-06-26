@@ -2,11 +2,11 @@
 import { Column } from '@ant-design/plots';
 import './pieplot.scss'
 import React, { useContext } from 'react';
-import {MyContext} from '../../views/login';
+import {MyContext} from '../../App';
 import { Pie, measureTextWidth } from '@ant-design/plots';
 
 const DemoPie = () => {
-  const [identifyData, setIdentifyData] = useContext(MyContext)!;
+  const {identifyData,setIdentifyData} = useContext(MyContext)!;
   const data = identifyData
   function renderStatistic(containerWidth, text, style) {
     return `<div style=font-size:10px>
@@ -89,7 +89,7 @@ const DemoPie = () => {
     }
     return(
       <div style={piestyle}>
-        <DemoPie />
+        {/* <DemoPie /> */}
       </div>
     )
   }

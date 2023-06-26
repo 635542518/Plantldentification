@@ -1,4 +1,4 @@
-import "./login.scss"
+
 import LoginBG from "../../images/banner.jpg";
 import Text from '../text';
 import Weather from '../weather';
@@ -26,7 +26,7 @@ const styleLoginBG = {
 }
 
 
-function Login(){
+function Choose(){
     return (
         <div className="body-box">
             <div className="login-container" style={styleLoginBG}>
@@ -42,9 +42,9 @@ function Login(){
                     {/* 图片识别box */}
                     {/* <ImageRecognition /> */}
                     {/* 选择box */}
-                    {/* <Identify /> */}
+                    <Identify />
                     {/* 图片上传box */}
-                    <DragAndDropUploader />
+                    {/* <DragAndDropUploader /> */}
                     {/* 视频识别 */}
                     {/* <VideoIdentify/> */}
                     {/* 病害率 */}
@@ -63,4 +63,4 @@ function Login(){
         </div>
     )
 }
-export default Login;
+export default Choose;

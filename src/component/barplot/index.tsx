@@ -2,11 +2,11 @@
 import { Column } from '@ant-design/plots';
 import './barplot.scss'
 import React, { useContext } from 'react';
-import {MyContext} from '../../views/login';
+import {MyContext} from '../../App';
 
 
 const DemoColumn = (props) => {
-  const [identifyData, setIdentifyData] = useContext(MyContext)!;
+  const {identifyData,setIdentifyData} = useContext(MyContext)!;
   const data = identifyData
 
   const config = {

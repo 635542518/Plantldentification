@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import ImageRecognition from '../imageRecognition';
 import { identifyImg } from '../../modules/identify_mod'
 import { getAll,remove } from '../../modules/database_mod'
-import { MyContext } from '../login';
+import {MyContext} from '../../App';
 import './temp.scss'
 import type { UploadProps } from 'antd';
 import { message, Upload } from 'antd';
@@ -73,12 +73,11 @@ navigator.geolocation.getCurrentPosition(showPosition);
 
 
 const App: React.FC = () => {
-  const identifyData = useContext(MyContext);
-  let filename = ''
+  const {identifyData,setIdentifyData} = useContext(MyContext)!;
+  const {filename,setFilename} = useContext(MyContext)!;
 
   useEffect(()=>{
     const imgCanvas:CanvasRenderingContext2D|null = document.querySelector('canvas')!.getContext('2d')
-    
     reader.onload = function(event) {
       fileImg.src = event.target!.result as string
     }
@@ -87,8 +86,9 @@ const App: React.FC = () => {
       imgCanvas!.clearRect(0, 0, IMGSIZE, IMGSIZE);
       imgCanvas!.drawImage(fileImg, 0, 0,IMGSIZE,IMGSIZE);
       let imgData:ImageData|undefined = imgCanvas?.getImageData(0, 0, IMGSIZE, IMGSIZE);
+      console.log(identifyData)
       identifyImg(imgData!).then((result)=>{
-          identifyData![1](result)
+          setIdentifyData(result)
           pushData(parserImgData(result,lat,lng,filename))
       })
     }
@@ -97,6 +97,7 @@ const App: React.FC = () => {
 
 
   const props: UploadProps = {
+    
     name: 'file',
     multiple: true,
     showUploadList: false,
@@ -104,22 +105,21 @@ const App: React.FC = () => {
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
-        message.success(`识别中`);
         getAll()
       }
       if (status === 'done') {
-
-        message.success(`${info.file.response['filename']} 识别成功`);
+        console.log(info.file.response['filename'])
         fileImg.src=`http://localhost:3000/files/${info.file.response['filename']}`
-        filename = info.file.response['filename']
+        setFilename(info.file.response['filename'])
 
       } else if (status === 'error') {
-        message.error(`预料之外的错误......`);
       }
+      
     },
     onDrop(e) {
       // console.log('Dropped files', e.dataTransfer.files);
     },
+
   };
 
 
