@@ -1,4 +1,4 @@
-import "./login.scss"
+// import "./login.scss"
 import LoginBG from "../../images/banner.jpg";
 import Text from '../text';
 import Weather from '../weather';
@@ -11,10 +11,12 @@ import Barplot from '../../component/barplot'
 import Pieplot from '../../component/pieplot'
 import Heatmap from '../../component/heatmap'
 import HistoryCollapse from '../history'
+
 import React, { createContext, useContext, useState } from 'react';
 import MyComponent from "../adcode";
 import { create } from "domain";
 
+export const MyContext = createContext<[any, React.Dispatch<React.SetStateAction<any>>] | undefined>(undefined);
 
 const styleLoginBG = {
     backgroundImage: `url(${LoginBG})`,
@@ -24,10 +26,10 @@ const styleLoginBG = {
     display: 'block',
     opacity: '2'
 }
-
-
-function Login(){
+function RecognitionResultIndex(){
+    const [identifyData, setIdentifyDate] = useState([])
     return (
+        <MyContext.Provider value={[identifyData, setIdentifyDate]}>
         <div className="body-box">
             <div className="login-container" style={styleLoginBG}>
                 <div className='cover' >
@@ -48,7 +50,7 @@ function Login(){
                     {/* 视频识别 */}
                     {/* <VideoIdentify/> */}
                     {/* 病害率 */}
-                    {/* <Barplot/> */}
+                    <Barplot/>
                     {/* 健康情况 */}
                     {/* <Pieplot/> */}
                     {/* 饼图 */}
@@ -61,6 +63,7 @@ function Login(){
                 <Text />
             </footer>
         </div>
+        </MyContext.Provider>
     )
 }
-export default Login;
+export default RecognitionResultIndex;

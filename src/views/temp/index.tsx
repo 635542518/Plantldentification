@@ -69,11 +69,10 @@ const IMGSIZE = 224
 
 const App: React.FC = () => {
   const {identifyData,setIdentifyData} = useContext(MyContext)!;
-  let filename = ''
+  const {filename,setFilename} = useContext(MyContext)!;
 
   useEffect(()=>{
     const imgCanvas:CanvasRenderingContext2D|null = document.querySelector('canvas')!.getContext('2d')
-    
     reader.onload = function(event) {
       fileImg.src = event.target!.result as string
     }
@@ -101,6 +100,7 @@ const App: React.FC = () => {
 
 
   const props: UploadProps = {
+    
     name: 'file',
     multiple: true,
     showUploadList: false,
@@ -115,15 +115,16 @@ const App: React.FC = () => {
 
         message.success({content:`${info.file.response['filename']} 识别成功`,key:'1'});
         fileImg.src=`http://localhost:3000/files/${info.file.response['filename']}`
-        filename = info.file.response['filename']
+        setFilename(info.file.response['filename'])
 
       } else if (status === 'error') {
-        message.error(`预料之外的错误......`);
       }
+      
     },
     onDrop(e) {
       // console.log('Dropped files', e.dataTransfer.files);
     },
+
   };
 
 
