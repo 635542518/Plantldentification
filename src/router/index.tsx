@@ -6,6 +6,7 @@ import User from '../views/user';
 import Login from '../views/login'
 import Barplot from '../component/barplot'
 
+/
  
 export const router_item:Array<object> = [
     { 
