@@ -42,37 +42,9 @@ function ImageRecognitionIndex(){
             </section>
             <section>
                 <div className="App">
-                    {/* 图片识别box */}
-                    {/* <ImageRecognition /> */}
-                    {/* 选择box */}
-                    {/* <Identify /> */}
-                    {/* 图片上传box */}
-                    <DragAndDropUploader />
-                    {/* 视频识别 */}
-                    {/* <VideoIdentify/> */}
-                    {/* 病害率 */}
-                    {/* <Barplot/> */}
-                    {/* 健康情况 */}
-                    {/* <Pieplot/> */}
-                    {/* 饼图 */}
-                    {/* <Heatmap/> */}
-                    {/* 历史记录 */}
-                    {/* <HistoryCollapse/> */}
-
-
-
-                    
-                    {/* <Carousel autoplay>
-                    <div>
-                        <span>1</span>
+                    <div style={{position: 'absolute',top: '55%',left: '50%',transform: 'translate(-50%,-50%)'}}>
+                    <HistoryCollapse/>
                     </div>
-                    <div>
-                        <span>1</span>
-                    </div>
-                    <div>
-                        <span>1</span>
-                    </div>
-                    </Carousel> */}
                 </div>
             </section>
             <footer>
@@ -82,67 +54,4 @@ function ImageRecognitionIndex(){
     )
 }
 
-function DataRrocessing(){
-    
-}
-
-
-function RecognitionResultDef(){
-    const {filename,setFilename} = useContext(MyContext)!;
-    const filenameurl =  'http://localhost:3000/files/' + filename;
-    fetch('/users/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message: 'Hello, World!' })
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);  // 打印响应数据
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    return (
-        <div className="body-box imageRecognitionIndexBbox">
-            <div className="login-container" style={styleLoginBG}>
-                <div className='cover' >
-                </div>
-            </div>
-            <section className="imageRecognitionIndexLeft">
-                <img src={filenameurl} alt="" />
-            </section>
-            <section>
-                <div className="App imageRecognitionIndexRight">
-                    {/* 图片识别box */}
-                    {/* <ImageRecognition /> */}
-                    {/* 选择box */}
-                    {/* <Identify /> */}
-                    {/* 图片上传box */}
-                    {/* <DragAndDropUploader /> */}
-                    {/* 视频识别 */}
-                    {/* <VideoIdentify/> */}
-                    {/* 病害率 */}
-                    {/* <Barplot/> */}
-                    {/* 健康情况 */}
-                    <Pieplot/>
-                    {/* 饼图 */}
-                    {/* <Heatmap/> */}
-                    {/* 历史记录 */}
-                    {/* <HistoryCollapse/> */}
-                </div>
-            </section>
-            <footer>
-                <Text />
-            </footer>
-        </div>
-    )
-}
-
-function App(){
-    const {identifyData,setIdentifyData} = useContext(MyContext)!;
-    return identifyData.length!=0?< RecognitionResultDef/>:<ImageRecognitionIndex/>
-    
-}
-export default App
+export default ImageRecognitionIndex

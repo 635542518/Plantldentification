@@ -1,21 +1,31 @@
-// @ts-nocheck
+//@ts-nocheck
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { GeographicHeatmap } from '@ant-design/maps';
+import { getAll } from '../../modules/database_mod';
 
 const DemoGeographicHeatmap = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    setData([{ lng: 104.101, lat: 30.649, t: 24.6, n: 'chengdu' }])
-    //数据暂时先这样
+    getAll().then((res: any) => {
+      let databaseData = res.map((v)=>{
+        let size = 0
+        if(v['name'].slice(-2)=='健康'){size=1}
+        if(v['name'].slice(-2)=='一般'){size=2}
+        if(v['name'].slice(-2)=='严重'){size=3}
+        return {lng:v['lng'],lat:v['lat'],t:size}
+      })
+      setData(databaseData)
+
+    })
   }, []);
 
   const config = {
     map: {
       type: 'amap',
-      zoom: 1.5,
-      center: [120.19660949707033, 30.234747338474293],
+      zoom: 12,
+      center: [112.98016, 22.93020],
       pitch: 0,
     },
     source: {
@@ -68,13 +78,12 @@ const DemoGeographicHeatmap = () => {
   return <GeographicHeatmap {...config} />;
 };
 const Heatmap = (props)=>{
+
     const mapstyle = {
-      height:'450px',
-      width:'450px',
-      background: 'rgba(255,255,255,.25)',
-      backdropFilter: 'blur(10px) saturate(1.5)',
+      height:props.height!=undefined?props.height:'280px',
+      width:props.width!=undefined?props.width:'280px',
       borderRadius: '10px',
-      padding: '10px',
+      overflow:'hidden'
     }
     return(
       <div style={mapstyle}>

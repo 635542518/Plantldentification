@@ -1,0 +1,31 @@
+
+.imageRecognitionIndexBbox {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+.imageRecognitionIndexLeft {
+    width: 30vw;
+    height: 90vh;
+    background: rgba(255,255,255,.25);
+    backdrop-filter: blur(10px) saturate(1.5);
+    margin: 0 10px;
+    border-radius: 10px;
+}
+.imageRecognitionIndexRight {
+    width: 65vw;
+    height: 90vh;
+    background: rgba(255,255,255,.25);
+    backdrop-filter: blur(10px) saturate(1.5);
+    margin: 0 10px;
+    border-radius: 10px;
+}
+.imageRecognitionIndexLeft img {
+    width: 150px;
+    height: 150px;
+}
+
+

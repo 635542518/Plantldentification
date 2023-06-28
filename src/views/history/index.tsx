@@ -4,10 +4,11 @@ import { remove } from '../../modules/database_mod'
 import './history.scss'
 import { getAll } from '../../modules/database_mod'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { CaretRightOutlined, DeleteFilled, EyeFilled, RollbackOutlined, SyncOutlined, UploadOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, DeleteFilled, EyeFilled, PieChartFilled, RollbackOutlined, SyncOutlined, UploadOutlined } from '@ant-design/icons';
 import Barplot from '../../component/barplot'
 import Pieplot from '../../component/pieplot'
-
+import Heatmap from '../../component/heatmap';
+import Suggestion from '../../component/suggestion'
 const { Panel } = Collapse;
 const { Search } = Input;
 
@@ -21,7 +22,7 @@ const HistoryCollapse: React.FC = () => {
     const [selectDisease, setSelectDisease] = useState<string>('')
     const [selectPlant, setSelectPlant] = useState<string>('')
     const [isdb, setIsdb] = useState(false)
-
+    const [isHeatmap,setIsHeatmap] = useState(false)
     let saveData: any[]
     function setPageData(res: any[]) {
         setData(res as any[])
@@ -51,18 +52,22 @@ const HistoryCollapse: React.FC = () => {
     }, [])
 
     const onSearch = (value: string) => {
-        let newData: any[] = []
         if (value == '') {
             getAll().then((res: any) => {
                 setPageData(res)
             })
         } else {
-            data.forEach((v) => {
-                if (v['address'].includes(value) || v['name'].includes(value)) {
-                    newData.push(v)
-                }
+            let newData: any[] = []
+            getAll().then((res: any) => {
+                res.forEach((v:any) => {
+                    if (v['address'].includes(value) || v['name'].includes(value)) {
+                        newData.push(v)
+                    }
+                })
+                setData(newData)
+
             })
-            setData(newData)
+ 
         }
     };
     const onSelectPlant = (e: string) => {
@@ -99,8 +104,15 @@ const HistoryCollapse: React.FC = () => {
     const dbBtn = () => {
         setIsdb(true)
     }
+    const mapBtn = () => {
+        setIsHeatmap(true)
+    }
     const backBtn = () => {
         setIsdb(false)
+        setIsHeatmap(false)
+    }
+    function backLogin(){
+        window.location.href='/#/login'
     }
     return (
         isdb ? (<div className='DbBox'>
@@ -121,11 +133,19 @@ const HistoryCollapse: React.FC = () => {
                 </Image.PreviewGroup>
             </div>
         </div>) :
+        isHeatmap?(<div className='DbBox'>
+            <Button onClick={backBtn} icon={<RollbackOutlined style={{ color: 'white' }} />} ghost style={{ background: 'rgba(0,0,0,.25)', color: 'white', border: 'none',position:'absolute',top:'10px',left:'10px',zIndex:99 }}></Button>
+            <Heatmap height='100%' width='100%'/>
+        </div>):
             (<div className='HistoryBox'>
                 <div className='HistoryQuey'>
+                    <div style={{width: '100%'}}><Button onClick={backLogin} icon={<RollbackOutlined style={{ color: 'white' }} />} ghost style={{ background: 'rgba(0,0,0,.25)', color: 'white', border: 'none'}}></Button></div>
                     <Search onSearch={onSearch} style={{ width: 170, marginTop: '20px' }} />
                     <Button icon={<EyeFilled />} onClick={dbBtn} ghost style={{ background: 'rgba(255,255,255,.25)', color: 'white', border: 'none', width: 170, marginTop: '40px' }} type="primary">
                         对比
+                    </Button>
+                    <Button icon={<PieChartFilled />} onClick={mapBtn} ghost style={{ background: 'rgba(255,255,255,.25)', color: 'white', border: 'none', width: 170, marginTop: '20px' }} type="primary">
+                        病害热力图
                     </Button>
                     <Button icon={<UploadOutlined />} onClick={exportBtn} ghost style={{ background: 'rgba(255,255,255,.25)', color: 'white', border: 'none', width: 170, marginTop: '20px' }} type="primary">
                         导出
@@ -194,7 +214,6 @@ const HistoryCollapse: React.FC = () => {
                                 }
                                 return (
                                     <Panel header={
-
                                         <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold' }}>
                                             <Checkbox checked={check[i]} onChange={(e: CheckboxChangeEvent) => {
                                                 e.stopPropagation()
@@ -221,8 +240,9 @@ const HistoryCollapse: React.FC = () => {
                                                 }
 
                                             }} style={{ color: 'white' }}><div>{v['name']}</div><div>{'识别速度:' + v['speed'] + '(ms)'}</div><div>{v['address']}</div></Checkbox>
-                                            <div style={{ background: status, height: '10px', width: '10px', marginLeft: '10px', borderRadius: '10px' }}>
+                                            <div style={{ background: status, height: '10px', width: '10px', marginLeft: '10px',marginRight: '30px', borderRadius: '10px' }}>
                                             </div>
+                                            <Suggestion title={v['name']}/>
                                         </div>
                                     }
                                         key={i}

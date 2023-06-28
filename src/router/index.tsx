@@ -5,15 +5,16 @@ import Home from '../views/home';
 import Choose from '../views/choose'
 import Login from '../views/login'
 import Barplot from '../component/barplot'
-import ImageRecognitionIndex from '../views/imageRecognitionIndex'
-import RecognitionResultIndex from '../views/recognitionResultIndex'
- 
+import ImageRecognitionIndex from '../views/ImageRecognitionIndex'
+import VideoRecognitionIndex from '../views/VideoRecognitionIndex'
+import Select from '../views/select'
+
 export const router_item:Array<object> = [
-    { 
+    {
         path: "/", 
         label:"首页", 
         key: "/",
-        element: <Navigate to="/" />
+        element:<Login/>
     },
     { 
         path: "/choose", 
@@ -34,10 +35,16 @@ export const router_item:Array<object> = [
         element: <ImageRecognitionIndex/>
     },
     { 
-        path: "/RecognitionResultIndex", 
+        path: "/VideoRecognitionIndex", 
         label:"登录", 
         key: "login",
-        element: <RecognitionResultIndex/>
+        element: <VideoRecognitionIndex/>
+    },
+    { 
+        path: "/select", 
+        label:"登录", 
+        key: "login",
+        element: <Select/>
     },
     {
         path: '/layout',
@@ -45,6 +52,7 @@ export const router_item:Array<object> = [
         label: " 控制台",
         key: "layout",
     },
+    
 ]
 
 

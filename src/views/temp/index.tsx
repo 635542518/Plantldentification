@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, createContext } from 'react';
 import ImageRecognition from '../imageRecognition';
-import { identifyImg } from '../../modules/identify_mod'
+import { identifyImg } from '../../modules/img_identify_mod'
 import { getAll,remove } from '../../modules/database_mod'
-import { MyContext } from '../../App';
 import './temp.scss'
 import type { UploadProps } from 'antd';
-import { message, Upload } from 'antd';
-
+import { Collapse, message, Upload, Image as AntImage, Button } from 'antd';
+import Pieplot from '../../component/pieplot';
+import Barplot from '../../component/barplot';
+import { CaretRightOutlined, SyncOutlined } from '@ant-design/icons';
+import Suggestion from '../../component/suggestion';
+const { Panel } = Collapse;
 const { Dragger } = Upload;
 
 interface UploadImgData {
@@ -19,18 +22,6 @@ interface UploadImgData {
   speed:number;
 }
 
-function pushData(Data:UploadImgData){
-  const options = {
-    method: 'POST',
-    headers: {'content-type': 'application/json'},
-    body: JSON.stringify(Data)
-  };
-  
-  fetch('http://localhost:3000/users/', options)
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(err => console.error(err));
-}
 
 function parserImgData(result:{name: string,value: number;}[],lng:number,lat:number,imgName:string,address:string,speedTime:number):UploadImgData{
   let maxVal = result[0]['value']
@@ -60,63 +51,103 @@ function parserImgData(result:{name: string,value: number;}[],lng:number,lat:num
   return res
 }
 
-let reader = new FileReader()
-let fileImg = new Image();
-fileImg.crossOrigin = ''
-const IMGSIZE = 224
+const ResultImgs = (props:any)=>{
 
-
+  return(<div className='ResultBox'>
+  <div className='HistoryCollapseStyle'>
+      <div style={{ margin: '10px 10px' }}>
+      </div>
+      <Collapse accordion ghost collapsible="icon" bordered={false} expandIcon={({ isActive }: any) => <CaretRightOutlined style={{ color: 'white' }} rotate={isActive ? 90 : 0} />}>
+          {
+              props.data != undefined ? props.data.map((v:any, i:any) => {
+                  let data = JSON.parse(v['outPutData'])
+                  let status: string = ''
+                  if (v['name'].slice(-2) == '健康') {
+                      status = `#71ef71`
+                  }else if (v['name'].slice(-2) == '一般') {
+                      status = `#fdd791`
+                  }else if (v['name'].slice(-2) == '严重') {
+                      status = `red`
+                  }else{
+                    status = '#e6e6e6'
+                  }
+                  return (
+                      <Panel header={
+                          <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold',color:'white' }}>
+                              <div>
+                                <div>{v['name']}{'\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'}{'识别速度:' + v['speed'] + '(ms)'}</div><div>{v['address']}</div>
+                              </div>
+                              <div style={{ background: status, height: '10px', width: '10px', marginLeft: '10px',marginRight: '30px', borderRadius: '10px' }}>
+                              </div>
+                              <Suggestion title={v['name']}/>
+                          </div>
+                      }
+                          key={i}
+                          className='PanelStyle'>
+                          <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                              <AntImage src={`http://localhost:3000/files/${v['imgName']}`} width={300} height={300} style={{ borderRadius: 10 }} />
+                              <Barplot width='280px' height='280px' data={data} />
+                              <Pieplot width='280px' height='280px' data={data} />
+                          </div>
+                      </Panel>
+                  )
+              }) : <div></div>
+          }
+      </Collapse>
+  </div>
+</div>)
+}
 
 const App: React.FC = () => {
-  const {identifyData,setIdentifyData} = useContext(MyContext)!;
-  const {filename,setFilename} = useContext(MyContext)!;
+  const [filenames,setFilenames] = useState<string[]>([])
+  const [data, setData] = useState<any[]>([])
+  async function pushData(Data:UploadImgData){
 
-  useEffect(()=>{
-    const imgCanvas:CanvasRenderingContext2D|null = document.querySelector('canvas')!.getContext('2d')
-    reader.onload = function(event) {
-      fileImg.src = event.target!.result as string
-    }
-
-    fileImg.onload = async function(){  
-      imgCanvas!.clearRect(0, 0, IMGSIZE, IMGSIZE);
-      imgCanvas!.drawImage(fileImg, 0, 0,IMGSIZE,IMGSIZE);
-      let imgData:ImageData|undefined = imgCanvas?.getImageData(0, 0, IMGSIZE, IMGSIZE);
-      const options = {method: 'GET'};
-      let response = await fetch('https://restapi.amap.com/v3/ip?=&output=JSON&key=73653ae946f02b0cb1e8c35957f0bd12', options)
-      let data = await response.json();
-      const [lng,lat] = data.rectangle.split(';')[0].split(',')
-      response = await fetch(`https://restapi.amap.com/v3/geocode/regeo?output=JSON&location=${lng},${lat}&key=73653ae946f02b0cb1e8c35957f0bd12&radius=1000&extensions=all`)
-      data = await response.json()
-      const address = data.regeocode.formatted_address 
-      const startTime = new Date()
-      identifyImg(imgData!).then((result:any)=>{
-          setIdentifyData(result)
-          const endTime = new Date()
-          const speedTime = (endTime.getTime() - startTime.getTime()) as number;
-          pushData(parserImgData(result,lng,lat,filename,address,speedTime))
-      })
-    }
-  },[])
-
-
+  }
+  let newFilename:string
   const props: UploadProps = {
-    
     name: 'file',
     multiple: true,
     showUploadList: false,
     action: 'http://localhost:3000/files',
+    accept:"image/png, image/jpeg",
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
         message.loading({ content: 'Loading...',key:'1'});
-        getAll()
       }
       if (status === 'done') {
+        newFilename = info.file.response['filename']
+        async function identifySuccess(filename:string){
+          let response = await fetch('https://restapi.amap.com/v3/ip?=&output=JSON&key=73653ae946f02b0cb1e8c35957f0bd12')
+          let data = await response.json();
+          const [lng,lat] = data.rectangle.split(';')[0].split(',')
+          response = await fetch(`https://restapi.amap.com/v3/geocode/regeo?output=JSON&location=${lng},${lat}&key=73653ae946f02b0cb1e8c35957f0bd12&radius=1000&extensions=all`)
+          data = await response.json()
+          const address = data.regeocode.formatted_address
+          const startTime = new Date()
+          const imgresult = await identifyImg(`http://localhost:3000/files/${filename}`)
+          const endTime = new Date()
+          const speedTime = (endTime.getTime() - startTime.getTime()) as number;
+          const options = {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify(parserImgData(imgresult,lng,lat,filename,address,speedTime))
+          };
+          fetch('http://localhost:3000/users/', options)
+            .then(response => response.json())
+            .then(async response => {
+              const allData = await getAll() as any
+              let fileNameList = info.fileList.map((v)=>{
+                message.success({content:`识别成功`,key:'1'});
+                return v.response.filename
+              })
+              setData(allData.filter((items:any)=>fileNameList.includes(items['imgName'])))
+            })
+            .catch(err => console.error(err));
 
-        message.success({content:`${info.file.response['filename']} 识别成功`,key:'1'});
-        fileImg.src=`http://localhost:3000/files/${info.file.response['filename']}`
-        setFilename(info.file.response['filename'])
-
+        }
+        identifySuccess(newFilename)
       } else if (status === 'error') {
       }
       
@@ -127,13 +158,13 @@ const App: React.FC = () => {
 
   };
 
-
-  return (<div>
-    <canvas height={IMGSIZE} width={IMGSIZE}></canvas>
-    <Dragger {...props} className='ImageRecognition' style={{border: 'dashed 1px white'}}>
-      <ImageRecognition />
-    </Dragger>
-  </div>
+  return (
+      <div>
+        <ResultImgs data = {data}/>
+          <Dragger {...props} className='ImageRecognition' style={{border: 'dashed 1px white'}}>
+            <ImageRecognition />
+          </Dragger>
+      </div>
   )
 };
 

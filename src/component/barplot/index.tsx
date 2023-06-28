@@ -19,7 +19,7 @@ const DemoColumn = (props) => {
         autoHide: true,
         autoRotate: false,
         style: {
-          fill: '#fff',
+          // fill: '#fff',
         },
       },
     },
@@ -28,7 +28,7 @@ const DemoColumn = (props) => {
         autoHide: true,
         autoRotate: false,
         style: {
-          fill: '#fff',
+          // fill: '#fff',
         },
       },
     },
