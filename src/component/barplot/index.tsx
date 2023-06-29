@@ -6,8 +6,8 @@ import {MyContext} from '../../App';
 
 
 const DemoColumn = (props) => {
-  const {identifyData,setIdentifyData} = useContext(MyContext)!;
-  let data = props.data!=undefined?props.data:identifyData
+  let data = props.data!=undefined?props.data:[]
+  data = data.sort((a, b) => b.value - a.value).slice(0,3);
   const config = {
     data,
     xField: 'name',
@@ -48,6 +48,7 @@ const Barplot = (props)=>{
     backdropFilter: 'blur(10px) saturate(1.5)',
     borderRadius: '10px',
     padding: '10px',
+    textAlign: 'center'
   }
   return(
     <div style={barstyle}>

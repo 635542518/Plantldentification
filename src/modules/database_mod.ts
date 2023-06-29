@@ -1,6 +1,8 @@
+import config from '../porject-config'
+
 function remove(id:number[]){
     return new Promise((resolve,reject)=>{
-        fetch(`http://localhost:3000/users/${id.join('|')}`)
+        fetch(`${config['webserver']}/users/${id.join('|')}`)
         .then(response => response.json())
         .then(response => resolve(response))
         .catch(err => reject(err));
@@ -14,8 +16,8 @@ function getAll() {
     };
   
     return new Promise((resolve, reject) => {
-      fetch('http://localhost:3000/users', options)
-        .then(response => response.json())
+      fetch(`${config['webserver']}/users`, options)
+      .then(response => response.json())
         .then(response => resolve(response))
         .catch(err => reject(err));
     });

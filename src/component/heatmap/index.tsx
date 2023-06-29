@@ -4,19 +4,21 @@ import ReactDOM from 'react-dom';
 import { GeographicHeatmap } from '@ant-design/maps';
 import { getAll } from '../../modules/database_mod';
 
-const DemoGeographicHeatmap = () => {
+const DemoGeographicHeatmap = (props) => {
   const [data, setData] = useState([]);
-
   useEffect(() => {
     getAll().then((res: any) => {
-      let databaseData = res.map((v)=>{
+      let checkData = []
+      res.forEach((v,i)=>{
         let size = 0
         if(v['name'].slice(-2)=='健康'){size=1}
         if(v['name'].slice(-2)=='一般'){size=2}
         if(v['name'].slice(-2)=='严重'){size=3}
-        return {lng:v['lng'],lat:v['lat'],t:size}
+        if(props.check[i]){
+          checkData.push({lng:v['lng'],lat:v['lat'],t:size})
+        }
       })
-      setData(databaseData)
+      setData(checkData)
 
     })
   }, []);
@@ -87,7 +89,7 @@ const Heatmap = (props)=>{
     }
     return(
       <div style={mapstyle}>
-        <DemoGeographicHeatmap />
+        <DemoGeographicHeatmap check={props.check}/>
       </div>
     )
   }

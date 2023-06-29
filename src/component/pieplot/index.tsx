@@ -6,8 +6,7 @@ import {MyContext} from '../../App';
 import { Pie, measureTextWidth } from '@ant-design/plots';
 
 const DemoPie = (props) => {
-  const {identifyData,setIdentifyData} = useContext(MyContext)!;
-  let data = props.data!=undefined?props.data:identifyData
+  let data = props.data!=undefined?props.data:[]
   function renderStatistic(containerWidth, text, style) {
     return `<div style=font-size:10px>
             ${text}

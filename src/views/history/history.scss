@@ -1,6 +1,6 @@
 .HistoryCollapseStyle{
     color: #fff;
-    width: 900px;
+    width: 1000px;
     height: 100%;
     background: rgba(255,255,255,.25);
     backdrop-filter: blur(10px) saturate(1.5);
@@ -85,17 +85,17 @@
 .ant-collapse-borderless >.ant-collapse-item:last-child, .ant-collapse-borderless >.ant-collapse-item:last-child .ant-collapse-header {
     border-radius: 5px;
 }
-.ant-input-group .ant-input {
-    background: rgba(255,255,255,.25);
-    color:white;
-    width: 100%;
-    margin-bottom: 0;
-    text-align: inherit;
-}
-.ant-input-search >.ant-input-group >.ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary) {
-    background: rgba(255,255,255,.25);
-    color: white;
-}
+// .ant-input-group .ant-input {
+//     background: rgba(255,255,255,.25);
+//     color:white;
+//     width: 100%;
+//     margin-bottom: 0;
+//     text-align: inherit;
+// }
+// .ant-input-search >.ant-input-group >.ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary) {
+//     background: rgba(255,255,255,.25);
+//     color: white;
+// }
 .btnStyle {
     background: rgba(255,255,255,.25);
     border:'none';
