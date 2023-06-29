@@ -6,7 +6,6 @@ import { getAll } from '../../modules/database_mod'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { CaretRightOutlined, DeleteFilled, EyeFilled, PieChartFilled, QuestionCircleOutlined, RollbackOutlined, SyncOutlined, UploadOutlined } from '@ant-design/icons';
 import Barplot from '../../component/barplot'
-import Pieplot from '../../component/pieplot'
 import Heatmap from '../../component/heatmap';
 import Suggestion from '../../component/suggestion'
 import config from '../../porject-config'
@@ -22,12 +21,9 @@ const { Search } = Input;
 const HistoryCollapse: React.FC = () => {
     const [data, setData] = useState<any[]>([])
     const [indeterminate, setIndeterminate] = useState(false);
-    const [checkAll, setCheckAll] = useState(false);
-    const [plantClass, setPlantClass] = useState<string[]>([])
-    const [diseaseClass, setDiseaseClass] = useState<string[]>([])
+    const [checkAll, setCheckAll] = useState(false);//全选按钮是否
     const [check, setCheck] = useState<boolean[]>([])
-    const [selectDisease, setSelectDisease] = useState<string>('')
-    const [selectPlant, setSelectPlant] = useState<string>('')
+
     const [isdb, setIsdb] = useState(false)
     const [isHeatmap, setIsHeatmap] = useState(false)
     const [value, setValue] = useState<string | undefined>(undefined);
@@ -37,26 +33,12 @@ const HistoryCollapse: React.FC = () => {
         setData(res as any[])
         saveData = res
         setCheck(Array(res.length).fill(false))
-        let tempPlantClass: string[] = []
-        let tempDiseaseClass: string[] = []
-        res.forEach((v: any, i: any) => {
-            tempPlantClass.push(v['name'].slice(0, -2))
-            tempDiseaseClass.push(v['name'].slice(-2))
-        })
     }
     useEffect(() => {
         getAll().then((res: any) => {
             setData(res as any[])
             saveData = res
             setCheck(Array(res.length).fill(false))
-            let tempPlantClass: string[] = []
-            let tempDiseaseClass: string[] = []
-            res.forEach((v: any, i: any) => {
-                tempPlantClass.push(v['name'].slice(0, -2))
-                tempDiseaseClass.push(v['name'].slice(-2))
-            })
-            setPlantClass([...new Set(tempPlantClass)])
-            setDiseaseClass([...new Set(tempDiseaseClass)])
         })
     }, [])
 
@@ -143,12 +125,12 @@ const HistoryCollapse: React.FC = () => {
             </div>
         </div>) :
             isHeatmap ? (<div style={{color:'white'}}>
+                    <div style={{ background:'rgb(0 0 0 / 10%)',color: 'white',backdropFilter:'blur(10px) saturate(1.5)',marginBottom: '5px',borderRadius: '10px',padding: '10px'}}>
+                            <QuestionCircleOutlined style={{paddingRight:'5px'}}/>说明：该地图可根据用户所选择的数据， 将其3种病害程度分别对应数字1-3显示在左下角，且颜色由浅至深显示在地图上, 颜色越深红代表该地区 植物病害越严重，用户可以着重处理该地区病害。
+                    </div>
                     <div className='DbBox'>
                             <Button onClick={backBtn} icon={<RollbackOutlined style={{ color: 'white' }} />} ghost style={{ background: 'rgba(0,0,0,.25)', color: 'white', border: 'none', position: 'absolute', top: '10px', left: '10px', zIndex: 99 }}></Button>
                             <Heatmap height='100%' width='100%' check={check}/>
-                    </div>
-                    <div style={{background: 'white',color: 'black',marginTop: '5px',borderRadius: '10px',padding: '10px'}}>
-                        <QuestionCircleOutlined style={{paddingRight:'5px'}}/>说明：该地图可根据用户所选择的数据， 将其3种病害程度分别对应数字1-3显示在左下角，且颜色由浅至深显示在地图上, 颜色越深红代表该地区 植物病害越严重，用户可以着重处理该地区病害。
                     </div>
             </div>) :
                 (<div className='HistoryBox'>

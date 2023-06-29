@@ -73,6 +73,9 @@ function Weather() {
             <div>风速:{location['now']['wind_speed']}km/h</div>
             <div>风向:{location['now']['wind_direction']}风</div>
             <div>风力等级:{location['now']['wind_scale']}级</div>
+            <div style={{fontWeight:'bold'}}>
+                未来6小时温度
+            </div>
             <hr />
             <div style={{ display:'flex', borderRadius: '10px', paddingLeft: '8px' }}>
                 {temperatures.map((v, i) => {
