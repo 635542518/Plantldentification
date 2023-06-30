@@ -32,19 +32,13 @@ const styleLoginBG = {
 function ImageRecognitionIndex(){
     return (
         <div className="body-box">
-            <div className="login-container" style={styleLoginBG}>
-                <div className='cover' >
-                </div>
-            </div>
             <section className="header-box">
                 <Logo />
                 <Weather />
             </section>
             <section>
                 <div className="App">
-                    <div style={{position: 'absolute',top: '55%',left: '50%',transform: 'translate(-50%,-50%)'}}>
                     <HistoryCollapse/>
-                    </div>
                 </div>
             </section>
             <footer>

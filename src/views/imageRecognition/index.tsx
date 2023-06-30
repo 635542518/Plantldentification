@@ -1,6 +1,6 @@
 import "./imageRecognition.scss";
-import { CameraFilled } from '@ant-design/icons';
-import { FileImageOutlined } from '@ant-design/icons';
+import { CameraFilled, FileImageFilled } from '@ant-design/icons';
+
 import { PictureOutlined } from '@ant-design/icons';
 
 const goToHistory = (event:any)=>{
@@ -19,7 +19,7 @@ function ImageRecognition() {
             <div className="ImageRecognitionButton">
                 <button style={{color:'white'}} onClick={goToVideoIdentify}><CameraFilled />视频识别</button>
                 {/* <button style={{color:'white'}} onClick={(event)=>{event.stopPropagation();}}><FileImageOutlined />粘贴图像或URL</button> */}
-                <button style={{color:'white'}} onClick={goToHistory}><PictureOutlined />识别记录</button>
+                <button style={{color:'white'}} onClick={goToHistory}><FileImageFilled />识别记录</button>
             </div>
         </section>
     )

@@ -1,22 +1,15 @@
 .vdoBox {
-    position: absolute;
-    top: 50%;
-    margin-top: 60px;
-    left: 50%;
-    color:'white';
-    transform: translate(-50%,-50%);
-    width:1000px;
-    height:600px;
-    z-index: 999;
+    width: 100%;
+    height: 80vh;
     border-radius: 10px;
-    background: rgba(255,255,255,.25);
+    background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(10px) saturate(1.5);
     padding: 5px;
+    position: relative;
+    color: white;
 }
 .vdo{
     border-radius: 10px;
-    position: absolute;
-    left: 50%;
-    top: 54%;
-    transform: translate(-50%,-50%);
+    width: 100%;
+    text-align: center;
 }

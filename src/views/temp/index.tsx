@@ -8,7 +8,7 @@ import type { UploadProps } from 'antd';
 import { Collapse, message, Upload, Image as AntImage, Button } from 'antd';
 import Pieplot from '../../component/pieplot';
 import Barplot from '../../component/barplot';
-import { CaretRightOutlined, SyncOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, ContainerFilled, InboxOutlined, SyncOutlined } from '@ant-design/icons';
 import Suggestion from '../../component/suggestion';
 import transformData from '../../modules/parser_result'
 
@@ -60,12 +60,13 @@ const ResultImgs = (props: any) => {
 
   return (<div className='ResultBox'>
     {
-      props.data.length == 0 ? <div className='HistoryCollapseStyle' style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+      props.data.length == 0 ? <div className='imgIdentifyResult' style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
         <div className='NoneDate'>
-          下方点击选择/拖拽图片以进行识别<br />
-          (支持批量识别)
+        <ContainerFilled style={{fontSize:'30px',color:'white'}}/><br/>
+          {/* 下方点击选择/拖拽图片以进行识别<br />
+          (支持批量识别) */}
         </div>
-      </div> : (<div className='HistoryCollapseStyle'>
+      </div> : (<div className='imgIdentifyResult'>
         <div style={{ margin: '10px 10px' }}>
         </div>
         <Collapse defaultActiveKey={['0']} accordion ghost collapsible="icon" bordered={false} expandIcon={({ isActive }: any) => <CaretRightOutlined style={{ color: 'white' }} rotate={isActive ? 90 : 0} />}>
@@ -95,8 +96,6 @@ const ResultImgs = (props: any) => {
                         病害程度:{parserName['level']}
                         {'\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'}
                         {'识别速度:' + v['speed'] + '(ms)'}
-                        {'\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'}
-                        {'识别时间:' + v['datetime']}
                       </div>
                       <div>
                         {v['address']}
@@ -114,17 +113,10 @@ const ResultImgs = (props: any) => {
                   key={i}
                   className='PanelStyle'>
                   <div>
-                    <div style={{ color: 'white', fontWeight: 'bold', display: 'flex', justifyContent: "space-around" }}>
-                      <div>
-                        识别图像
-                      </div>
-                      <div>
-                        置信度(前三)
-                      </div>
-                    </div>
+  
                     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                       <AntImage src={`${config['webserver']}/files/${v['imgName']}`} width={335} height={335} style={{ borderRadius: 10 }} />
-                      <Barplot width='315px' height='315px' data={data} />
+                      <Barplot width='500px' height='315px' data={data} />
                     </div>
                   </div>
                 </Panel>
@@ -195,9 +187,11 @@ const App: React.FC = () => {
   return (
     <div>
       <ResultImgs data={data} />
-      <Dragger {...props} className='ImageRecognition' style={{ border: 'dashed 1px white' }}>
-        <ImageRecognition />
-      </Dragger>
+      <div className='ImageRecognition'>
+        <Dragger {...props} style={{ border: 'dashed 1px white' }}>
+          <ImageRecognition />
+        </Dragger>
+      </div>
     </div>
   )
 };

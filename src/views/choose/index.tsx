@@ -39,22 +39,10 @@ function Choose(){
             </section>
             <section>
                 <div className="App">
-                    {/* 图片识别box */}
-                    {/* <ImageRecognition /> */}
-                    {/* 选择box */}
+
+
                     <Identify />
-                    {/* 图片上传box */}
-                    {/* <DragAndDropUploader /> */}
-                    {/* 视频识别 */}
-                    {/* <VideoIdentify/> */}
-                    {/* 病害率 */}
-                    {/* <Barplot/> */}
-                    {/* 健康情况 */}
-                    {/* <Pieplot/> */}
-                    {/* 饼图 */}
-                    {/* <Heatmap/> */}
-                    {/* 历史记录 */}
-                    {/* <HistoryCollapse/> */}
+
                 </div>
             </section>
             <footer>

@@ -1,10 +1,10 @@
-import { Collapse, Image, Checkbox, Button, Select, Input, TreeSelect, message } from 'antd';
+import { Collapse, Image, Checkbox, Button, Select, Input, TreeSelect, message, FloatButton, Popover } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { remove } from '../../modules/database_mod'
 import './history.scss'
 import { getAll } from '../../modules/database_mod'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { CaretRightOutlined, DeleteFilled, EyeFilled, PieChartFilled, QuestionCircleOutlined, RollbackOutlined, SyncOutlined, UploadOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, DeleteFilled, EyeFilled, PieChartFilled, QuestionCircleFilled, QuestionCircleOutlined, RollbackOutlined, SyncOutlined, UploadOutlined } from '@ant-design/icons';
 import Barplot from '../../component/barplot'
 import Heatmap from '../../component/heatmap';
 import Suggestion from '../../component/suggestion'
@@ -73,7 +73,11 @@ const HistoryCollapse: React.FC = () => {
         }
     }
     const mapBtn = () => {
-        setIsHeatmap(true)
+        if(check.reduce((accumulator, currentValue) => accumulator + Number(currentValue), 0)<2){
+            message.warning('请选择多条数据进行查看')
+        }else{
+            setIsHeatmap(true)
+        }
     }
     const backBtn = () => {
         setIsdb(false)
@@ -125,12 +129,15 @@ const HistoryCollapse: React.FC = () => {
             </div>
         </div>) :
             isHeatmap ? (<div style={{color:'white'}}>
-                    <div style={{ background:'rgb(0 0 0 / 10%)',color: 'white',backdropFilter:'blur(10px) saturate(1.5)',marginBottom: '5px',borderRadius: '10px',padding: '10px'}}>
-                            <QuestionCircleOutlined style={{paddingRight:'5px'}}/>说明：该地图可根据用户所选择的数据， 将其3种病害程度分别对应数字1-3显示在左下角，且颜色由浅至深显示在地图上, 颜色越深红代表该地区 植物病害越严重，用户可以着重处理该地区病害。
+                    <div style={{ background:'rgb(0 0 0 / 10%)',color: 'white',backdropFilter:'blur(10px) saturate(1.5)',marginBottom: '5px',borderRadius: '10px',padding: '5px',width:'100%'}}>
+                            <QuestionCircleOutlined style={{paddingRight:'5px'}}/>说明：该地图可根据用户所选择的数据,对应颜色由浅至深显示在地图上, 颜色越深红代表该地区 植物病害越严重，用户可以着重处理该地区病害。
                     </div>
                     <div className='DbBox'>
                             <Button onClick={backBtn} icon={<RollbackOutlined style={{ color: 'white' }} />} ghost style={{ background: 'rgba(0,0,0,.25)', color: 'white', border: 'none', position: 'absolute', top: '10px', left: '10px', zIndex: 99 }}></Button>
                             <Heatmap height='100%' width='100%' check={check}/>
+                            <Popover content={(<div>数值由小到大代表病害的严重程度</div>)} title="说明">
+                                <FloatButton icon={<QuestionCircleOutlined />} type="default" style={{ left: -45 ,bottom:10}}/>
+                            </Popover>
                     </div>
             </div>) :
                 (<div className='HistoryBox'>
@@ -260,17 +267,9 @@ const HistoryCollapse: React.FC = () => {
                                             className='PanelStyle'
                                         >
                                             <div>
-                                                <div style={{ color: 'white', fontWeight: 'bold', display: 'flex', justifyContent: "space-around" }}>
-                                                    <div>
-                                                        识别图像
-                                                    </div>
-                                                    <div>
-                                                        置信度(前三)
-                                                    </div>
-                                                </div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                                                     <Image src={`${config['webserver']}/files/${v['imgName']}`} width={335} height={335} style={{ borderRadius: 10 }} />
-                                                    <Barplot width='315px' height='315px' data={data} />
+                                                    <Barplot width='400px' height='315px' data={data} />
                                                 </div>
                                             </div>
                                         </Panel>

@@ -16,8 +16,8 @@ function App() {
   return (
     <MyContext.Provider value={{identifyData, setIdentifyData,filename,setFilename}}>
     <div>
-    <ConfigProvider>
-      {/* <ConfigProvider theme={{ token: { colorPrimary: '#2ed573'}}}> */}
+    {/* <ConfigProvider> */}
+      <ConfigProvider theme={{ token: { colorPrimary: '#2ed573'}}}>
       <HashRouter>
         <GetRouters />
       </HashRouter>

@@ -10,7 +10,7 @@ const DemoGeographicHeatmap = (props) => {
     getAll().then((res: any) => {
       let checkData = []
       res.forEach((v,i)=>{
-        let size = 0
+        let size = 1
         if(v['name'].slice(-2)=='健康'){size=1}
         if(v['name'].slice(-2)=='一般'){size=2}
         if(v['name'].slice(-2)=='严重'){size=3}

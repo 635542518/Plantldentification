@@ -2,13 +2,6 @@
   "name": "react_pwa_porject",
   "version": "0.1.0",
   "private": true,
-  "peerDependencies": {
-    "@ant-design/icons": "^4.6.0",
-    "antd": "^4.6.3",
-    "lodash": "^4.17.20",
-    "react": ">=16.8.4",
-    "react-dom": ">=16.8.4"
-  },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@ant-design/charts": "^1.4.2",
@@ -23,7 +16,7 @@
     "@types/node": "^17.0.45",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
-    "antd": "^4.6.3",
+    "antd": "^5.6.3",
     "axios": "^1.4.0",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",

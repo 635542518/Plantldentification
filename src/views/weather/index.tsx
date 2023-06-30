@@ -100,7 +100,7 @@ function Weather() {
                         <img src={area} alt="" width={'15px'} style={{ marginLeft: '5px' }} />
                     </div>
                     <div className='Temp'>
-                        <div>
+                        <div style={{fontSize:'35px'}}>
                             {location['now']['temperature']}℃
                         </div>
 

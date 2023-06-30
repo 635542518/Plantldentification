@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { identifyVideo } from '../../modules/identify_mod'
 import './videoIdentify.scss'
 import { MyContext } from '../../App';
-import { Button, message } from 'antd';
-import { RollbackOutlined } from '@ant-design/icons';
+import { Button, Popover, Switch, message } from 'antd';
+import { LoadingOutlined, RollbackOutlined } from '@ant-design/icons';
 import Suggestion from '../../component/suggestion'
 import config from '../../porject-config';
 import { parserImgData } from '../temp';
@@ -13,10 +13,15 @@ let identifyResult:{
     name: string;
     value: number;
 }[] = []
+let identifyResultMax:{
+    name: string;
+    value: number;
+} = {name:'未识别到植物',value:0}
 
 function VideoIdentify() {
     const [resultObject, setResultObject] = useState<any>({ name: '未识别到植物', value: 0 })
-
+    const [autoIdentify, setAutoIdentify] = useState<any>(false)
+    
     useEffect(() => {
         const canvas = document.createElement('canvas');
         let imgsize = 224
@@ -43,9 +48,10 @@ function VideoIdentify() {
                 const endTime = new Date()
                 identifySpeed = (endTime.getTime() - startTime.getTime()) as number
                 identifyResult = result
-                setResultObject(result.reduce(function (prev, current) {
+                identifyResultMax = result.reduce(function (prev, current) {
                     return (prev.value > current.value) ? prev : current;
-                }))
+                })
+                setResultObject(identifyResultMax)
             })
         }, 150)
         return () => {
@@ -56,12 +62,12 @@ function VideoIdentify() {
         window.location.href = '/#/login'
     }
 
-    const takePhoto = async () => {
-        if (resultObject['name']=="未识别到植物"){
-            message.warning('未识别到植物！')
+    const takePhoto = async (e:any) => {
+        if (identifyResultMax['name']=="未识别到植物"){
+            if(e){message.warning('未识别到植物！')}
             return
         }
-        message.success('结果保存成功！')
+        if(e){message.success('结果保存成功！')}
         const video = document.querySelector('video')!;
         const canvas = document.createElement('canvas');
         let imgsize = 224
@@ -98,23 +104,46 @@ function VideoIdentify() {
     return (
         <div className='vdoBox'>
             <Button onClick={backBtn} icon={<RollbackOutlined style={{ color: 'white' }} />} ghost style={{ background: 'rgba(255,255,255,.25)', color: 'white', border: 'none' }}></Button>
-            <div style={{ color: 'white', textAlign: 'center',marginTop: '-20px' }}>
+            <div style={{ color: 'white', textAlign: 'center'}}>
                 植物种类:{parserResult['name']}<br/>
                 植物病害:{parserResult['disease']}<br/>
                 病害程度:{parserResult['level']}
             </div>
             {resultObject['name']=="未识别到植物"?(
-            <div style={{ color: 'white', textAlign: 'center' }}>
+            <div style={{ color: 'white', textAlign: 'center',height:'20px' }}>
                 
             </div>):(
-                <div style={{ color: 'white', textAlign: 'center' }}>
+                <div style={{ color: 'white', textAlign: 'center' ,height:'20px'}}>
                     置信度:{resultObject['value']}%
                 </div>
             )}
-            <video className='vdo'></video>
-            <div style={{ color: 'white', border: 'none', position: 'absolute', left: '50%', bottom: '1%', transform: 'translate(-50%,-50%)',display: 'flex',width: '448px',justifyContent: 'space-between'}}>
-                <Button ghost onClick={takePhoto} style={{ background: 'rgba(255,255,255,.25)', color: 'white', border: 'none' }}>保存结果</Button>
-                <Suggestion title={resultObject['name']} />
+            {autoIdentify?(<div style={{textAlign:'center',marginTop:'10px',height:'26px'}}>
+                自动监测中<LoadingOutlined style={{ fontSize: 24 }} spin />
+            </div>):(<div style={{marginTop:'10px',height:'26px'}}></div>)}
+            <div className='vdo'>
+                <video style={{borderRadius: '10px'}}></video>
+                <div style={{width:'448px',margin:'auto'}}>
+                <div style={{color:'white',margin:'5px 0px',display:'flex',justifyContent:'space-between'}}>
+                        <Popover content={(<div>自动将识别到的植物记录至数据库中，可在识别记录中查看</div>)} title="提示">
+                            自动监测：<Switch checkedChildren="开启" unCheckedChildren="关闭" onChange={(e)=>{
+                                let saveDataInterval = undefined
+                                if(e){
+                                    setAutoIdentify(true)
+                                    saveDataInterval = setInterval(()=>{
+                                        takePhoto(false)
+                                    },3000)
+                                }else{
+                                    setAutoIdentify(false)
+                                    clearInterval(saveDataInterval)
+                                }
+                            }}/>
+                        </Popover>
+                </div>
+                <div style={{display: 'flex',width: '100%',justifyContent: 'space-between'}}>
+                    <Button ghost onClick={takePhoto} style={{ background: 'rgba(255,255,255,.25)', color: 'white', border: 'none' }}>保存结果</Button>
+                    <Suggestion title={resultObject['name']} />
+                </div>
+                </div>
             </div>
         </div>
     );

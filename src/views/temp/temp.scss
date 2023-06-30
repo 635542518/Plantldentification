@@ -1,14 +1,33 @@
 .ResultBox{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -70%);
-    height: 50vh;
+    width: 100%;
+    height: 52vh;
 }
 .NoneDate{
     text-align: center;
-    font-size: 30px;
     line-height: 100%;
     font-weight: bold;
-    opacity: .5;
+    opacity: 0.5;
+    transform: scale(4);
+}
+.imgIdentifyResult{
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,.25);
+    backdrop-filter: blur(10px) saturate(1.5);
+    padding: 5px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.imgIdentifyResult::-webkit-scrollbar {
+    width: 4px;
+}
+.imgIdentifyResult::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.2);
+}
+.imgIdentifyResult::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
 }
