@@ -26,9 +26,9 @@ const DemoGeographicHeatmap = (props) => {
   const config = {
     map: {
       type: 'amap',
-      zoom: 12,
-      center: [112.98016, 22.93020],
-      pitch: 0,
+      zoom: 8,
+      center: [120.068, 30.25683],
+      pitch: 45,
     },
     source: {
         data: data,
@@ -36,8 +36,9 @@ const DemoGeographicHeatmap = (props) => {
       },
     size: {
         field: 't',
-        value: [0, 1],
+        value: [0, 0.5],
     },
+    shape: 'GeographicHeatmap3D',
     style: {
       intensity: 2,
       radius: 15,

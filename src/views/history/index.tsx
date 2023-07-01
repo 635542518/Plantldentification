@@ -115,7 +115,7 @@ const HistoryCollapse: React.FC = () => {
                 <Image.PreviewGroup>
                     {
                         check.map((v, i) => {
-                            if (v) {
+                            if (v && data[i]!=undefined) {
                                 return <div style={{ marginTop: '10px', textAlign: 'center', color: 'white' }} key={i}>
                                     <div>{data[i]['name']}</div>
                                     {/* <Image width={224} height={224} src={`http://localhost:3000/files/${data[i]['imgName']}`} /> */}
@@ -129,13 +129,13 @@ const HistoryCollapse: React.FC = () => {
             </div>
         </div>) :
             isHeatmap ? (<div style={{color:'white'}}>
-                    <div style={{ background:'rgb(0 0 0 / 10%)',color: 'white',backdropFilter:'blur(10px) saturate(1.5)',marginBottom: '5px',borderRadius: '10px',padding: '5px',width:'100%'}}>
-                            <QuestionCircleOutlined style={{paddingRight:'5px'}}/>说明：该地图可根据用户所选择的数据,对应颜色由浅至深显示在地图上, 颜色越深红代表该地区 植物病害越严重，用户可以着重处理该地区病害。
+                    <div style={{ background:'white',color:'black',marginBottom: '5px',borderRadius: '10px',padding: '5px',width:'100%'}}>
+                            <QuestionCircleOutlined style={{paddingRight:'5px',color:'red'}}/>说明：该地图可根据用户所选择的数据,对应颜色由浅至深显示在地图上, 颜色越深红代表该地区 植物病害越严重，用户可以着重处理该地区病害。
                     </div>
                     <div className='DbBox'>
                             <Button onClick={backBtn} icon={<RollbackOutlined style={{ color: 'white' }} />} ghost style={{ background: 'rgba(0,0,0,.25)', color: 'white', border: 'none', position: 'absolute', top: '10px', left: '10px', zIndex: 99 }}></Button>
                             <Heatmap height='100%' width='100%' check={check}/>
-                            <Popover content={(<div>数值由小到大代表病害的严重程度</div>)} title="说明">
+                            <Popover content={(<div>数值由小到大代表该地区病害的严重程度</div>)} title="说明">
                                 <FloatButton icon={<QuestionCircleOutlined />} type="default" style={{ left: -45 ,bottom:10}}/>
                             </Popover>
                     </div>
@@ -269,7 +269,7 @@ const HistoryCollapse: React.FC = () => {
                                             <div>
                                                 <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                                                     <Image src={`${config['webserver']}/files/${v['imgName']}`} width={335} height={335} style={{ borderRadius: 10 }} />
-                                                    <Barplot width='400px' height='315px' data={data} />
+                                                    <Barplot width='500px' height='315px' data={data} />
                                                 </div>
                                             </div>
                                         </Panel>

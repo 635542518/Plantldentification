@@ -54,7 +54,8 @@ const DemoColumn = (props:any) => {
         text:'植物种类'
       },
       label: {
-        autoRotate: true,
+        // autoRotate: true,
+        rotate:7
         }
     },
     yAxis:{
